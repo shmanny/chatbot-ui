@@ -1,5 +1,4 @@
 import { signIn } from 'next-auth/react';
-import { useTranslation } from 'react-i18next';
 
 import Image from 'next/image';
 
@@ -9,7 +8,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 
 export default function Unauthorized() {
-  const { t } = useTranslation();
   return (
     <div className="flex justify-center items-center flex-col space-y-4 w-full min-h-screen">
       <Image
