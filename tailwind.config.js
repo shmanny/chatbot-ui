@@ -12,7 +12,7 @@ module.exports = {
     colors: {
       pga: {
         DEFAULT: '#003970',
-        mid: '#00203D',
+        mid: '#00234B',
         dark: '#001529'
       },
     }
