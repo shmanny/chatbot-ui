@@ -32,6 +32,9 @@ yarn-error.log*
 .env
 .okta.env
 
+# SST
+/.sst
+/.open-next
 # vercel
 .vercel
 

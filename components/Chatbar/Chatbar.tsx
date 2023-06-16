@@ -24,6 +24,8 @@ import Sidebar from '../Sidebar';
 import ChatbarContext from './Chatbar.context';
 import { ChatbarInitialState, initialState } from './Chatbar.state';
 
+import { signOut } from 'next-auth/react';
+
 import { v4 as uuidv4 } from 'uuid';
 
 export const Chatbar = () => {
@@ -172,6 +174,10 @@ export const Chatbar = () => {
     }
   };
 
+  const handleLogout = () => {
+    signOut()
+  }
+
   const handleToggleChatbar = () => {
     homeDispatch({ field: 'showChatbar', value: !showChatbar });
     localStorage.setItem('showChatbar', JSON.stringify(!showChatbar));
@@ -217,6 +223,7 @@ export const Chatbar = () => {
         handlePluginKeyChange,
         handleClearPluginKey,
         handleApiKeyChange,
+        handleLogout
       }}
     >
       <Sidebar<Conversation>
