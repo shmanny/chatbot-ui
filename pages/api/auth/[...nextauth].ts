@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth'
 import Okta from 'next-auth/providers/okta'
-import { Config } from 'sst/node/config'
 
 export const authOptions = {
   providers: [
