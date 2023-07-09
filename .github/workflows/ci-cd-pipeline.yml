@@ -10,3 +10,39 @@ permissions:
 
 env:
   AWS_REGION: us-east-1
+
+
+jobs:
+  registry:
+    runs-on: ubuntu-20.04
+    outputs:
+      respository-name: ${{ steps.create-registry.outputs.repository-name }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Configure AWS credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ AWS_ROLE_ARN }}
+          aws-region: ${{ AWS_REGION }}
+      - name: Create ECR
+        id: create-registry
+        run: |
+          cd terraform/registry/
+
+          terraform init \
+          -backend-config=config/backend-config.tf \
+          -reconfigure \
+          -input=false
+
+          terraform apply \ 
+          -var-file=vars.tfvars
+          -input=false
+          -auto-approve
+  docker-build:
+    runs-on: ubuntu-20.04
+    needs: [registry]
+    env:
+      REPOSITORY_NAME: ${{ needs.registry.outputs.repository-name }}
+      ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
+
