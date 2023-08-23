@@ -27,7 +27,7 @@ export class CdkStack extends Stack {
       vpc: vpc,
     });
 
-    const appSecret = secretsmanager.Secret.fromSecretNameV2(
+    const pgaAppSecret = secretsmanager.Secret.fromSecretNameV2(
       this,
       'PgaGptSecret',
       'pga-gpt-secrets',
@@ -40,17 +40,19 @@ export class CdkStack extends Stack {
 
 
     // Access individual key-value pairs
-    const OKTA_OAUTH2_CLIENT_SECRET = appSecret
+    const OKTA_OAUTH2_CLIENT_SECRET = pgaAppSecret
       .secretValueFromJson('OKTA_OAUTH2_CLIENT_SECRET')
       .unsafeUnwrap();
-    const OKTA_OAUTH2_CLIENT_ID = appSecret
+    const OKTA_OAUTH2_CLIENT_ID = pgaAppSecret
       .secretValueFromJson('OKTA_OAUTH2_CLIENT_ID')
       .unsafeUnwrap();
-    const OKTA_OAUTH2_ISSUER = appSecret
+    const OKTA_OAUTH2_ISSUER = pgaAppSecret
       .secretValueFromJson('OKTA_OAUTH2_ISSUER')
       .unsafeUnwrap();
-    const SECRET = appSecret.secretValueFromJson('SECRET').unsafeUnwrap();
-    const OPENAI_API_KEY = appSecret
+    const SECRET = pgaAppSecret
+      .secretValueFromJson('SECRET')
+      .unsafeUnwrap();
+    const OPENAI_API_KEY = pgaAppSecret
       .secretValueFromJson('OPENAI_API_KEY')
       .unsafeUnwrap();
 
@@ -77,7 +79,7 @@ export class CdkStack extends Stack {
               OKTA_OAUTH2_ISSUER,
               SECRET,
               OPENAI_API_KEY,
-              NEXTAUTH_URL: 'https://dev.chatgpt.pgahq.com'
+              NEXTAUTH_URL: 'https://dev.ai.pgahq.com'
             },
             taskRole,
             
@@ -91,8 +93,19 @@ export class CdkStack extends Stack {
         path: '/api/healthcheck'
       })
 
-      const httpsCert = cert.Certificate.fromCertificateArn(this, 'HttpsCert', 'arn:aws:acm:us-east-1:099448516820:certificate/a15db74b-b8b5-4965-84d2-8db10723905c');
-      const wwwCert = cert.Certificate.fromCertificateArn(this, 'WwwCert', 'arn:aws:acm:us-east-1:099448516820:certificate/6d13bc64-50cc-47c7-90f1-4a9a813fd6c1');
+      const hostedZone = route53.HostedZone.fromLookup(this, 'PgaHostedDns', {
+        domainName: 'dev.ai.pgahq.com', // Replace with your own domain name
+      });  
+
+      const httpsCert = new cert.Certificate(this, 'PgaGptHttpsCert', {
+        domainName: 'dev.ai.pgahq.com',
+        validation: cert.CertificateValidation.fromDns(hostedZone)
+      })
+
+      const wwwCert = new cert.Certificate(this, 'PgaGptWwwCert', {
+        domainName: 'www.dev.ai.pgahq.com',
+        validation: cert.CertificateValidation.fromDns(hostedZone)
+      })
 
       albLoadBalancer.loadBalancer.addListener('SSL', {
         port: 443,
@@ -101,9 +114,6 @@ export class CdkStack extends Stack {
         defaultTargetGroups:  [albLoadBalancer.targetGroup]
       })
 
-    const hostedZone = route53.HostedZone.fromLookup(this, 'PgaHostedDns', {
-      domainName: 'dev.chatgpt.pgahq.com', // Replace with your own domain name
-    });
 
     new route53.ARecord(this, 'PgaGptAliasRecord', {
       zone: hostedZone,

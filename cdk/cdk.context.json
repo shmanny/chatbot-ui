@@ -14,5 +14,9 @@
   "hosted-zone:account=099448516820:domainName=ai.pgahq.com:region=us-east-1": {
     "Id": "/hostedzone/Z03778243M7GN6TB9EQ5S",
     "Name": "ai.pgahq.com."
+  },
+  "hosted-zone:account=099448516820:domainName=dev.ai.pgahq.com:region=us-east-1": {
+    "Id": "/hostedzone/Z08167202YLQ8RAPB9QPW",
+    "Name": "dev.ai.pgahq.com."
   }
 }
