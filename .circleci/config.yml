@@ -1,27 +1,18 @@
- version: 2.1
- orbs:
-   node: circleci/node@4.1.0
-   aws-ecr: circleci/aws-ecr@9.0.0
- jobs:
-   build:
-     executor:
-       name: node/default
-     steps:
-       - checkout
-       - node/install-packages
-       - run:
-           name: Run tests
-           command: npm run test
-   build-and-push-image:
-     executor: aws-ecr/default
-     steps:
-       - checkout
-       - aws-ecr/build-and-push-image:
-           repo: '${AWS_ECR_REPOSITORY}'
-           tag: '${CIRCLE_SHA1}'
- workflows:
-   build_and_test:
-     jobs:
-       - build
-       - build-and-push-image
+version: 2.1
 
+orbs:
+  aws-ecr: circleci/aws-ecr@x.y.z
+  aws-ecs: circleci/aws-ecs@0x.y.z
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "${CIRCLE_SHA1}"
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image # only run this job once aws-ecr/build-and-push-image has completed
+          family: "${AWS_RESOURCE_NAME_PREFIX}-service"
+          cluster: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
+          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=${CIRCLE_SHA1}"
