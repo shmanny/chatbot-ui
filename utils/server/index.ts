@@ -34,11 +34,13 @@ export const OpenAIStream = async (
   if (OPENAI_API_TYPE === 'azure') {
     url = `${OPENAI_API_HOST}/openai/deployments/${AZURE_DEPLOYMENT_ID}/chat/completions?api-version=${OPENAI_API_VERSION}`;
   }
+  const apiKey = process.env.OPENAI_API_KEY as string
+
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
       ...(OPENAI_API_TYPE === 'openai' && {
-        Authorization: `Bearer ${key ? key : process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${apiKey}`
       }),
       ...(OPENAI_API_TYPE === 'azure' && {
         'api-key': `${key ? key : process.env.OPENAI_API_KEY}`

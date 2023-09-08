@@ -13,7 +13,7 @@ export const config = {
   runtime: 'edge',
 };
 
-const handler = async (req: Request): Promise<Response> => {
+export default async function handler(req: Request): Promise<Response> {
   try {
     const { model, messages, key, prompt, temperature } = (await req.json()) as ChatBody;
 
@@ -65,4 +65,3 @@ const handler = async (req: Request): Promise<Response> => {
   }
 };
 
-export default handler;

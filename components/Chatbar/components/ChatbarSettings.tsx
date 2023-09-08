@@ -1,4 +1,4 @@
-import { IconFileExport, IconSettings } from '@tabler/icons-react';
+import { IconFileExport, IconLogout } from '@tabler/icons-react';
 import { useContext, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
@@ -34,6 +34,7 @@ export const ChatbarSettings = () => {
     handleImportConversations,
     handleExportData,
     handleApiKeyChange,
+    handleLogout,
   } = useContext(ChatbarContext);
 
   return (
@@ -42,12 +43,10 @@ export const ChatbarSettings = () => {
         <ClearConversations onClearConversations={handleClearConversations} />
       ) : null}
 
-      <Import onImport={handleImportConversations} />
-
       <SidebarButton
-        text={t('Export data')}
-        icon={<IconFileExport size={18} />}
-        onClick={() => handleExportData()}
+        text={t('Sign Out')}
+        icon={<IconLogout size={18} />}
+        onClick={() => handleLogout()}
       />
 
       {!serverSideApiKeyIsSet ? (
