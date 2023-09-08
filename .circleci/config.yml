@@ -1,0 +1,27 @@
+ version: 2.1
+ orbs:
+   node: circleci/node@4.1.0
+   aws-ecr: circleci/aws-ecr@x.y.z
+ jobs:
+   build:
+     executor:
+       name: node/default
+     steps:
+       - checkout
+       - node/install-packages
+       - run:
+           name: Run tests
+           command: npm run test
+   build-and-push-image:
+     executor: aws-ecr/default
+     steps:
+       - checkout
+       - aws-ecr/build-and-push-image:
+           repo: '${AWS_ECR_REPOSITORY}'
+           tag: '${CIRCLE_SHA1}'
+ workflows:
+   build_and_test:
+     jobs:
+       - build
+       - build-and-push-image
+
