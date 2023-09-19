@@ -18,7 +18,7 @@ export class EcsStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     const updatedProps = {
       ...props,
-      env: { ...props?.env, region: 'us-east-1' },
+      env: { ...props?.env, region: 'us-east-1', account: process.env.CDK_DEFAULT_ACCOUNT },
     };
     super(scope, id, updatedProps);
 
@@ -101,7 +101,7 @@ export class EcsStack extends Stack {
       'PgaGptImage',
       dockerImage.repository.repositoryArn,
     );
-
+    account: '099448516820'
 
     const albLoadBalancer =
       new ecs_patterns.ApplicationLoadBalancedFargateService(

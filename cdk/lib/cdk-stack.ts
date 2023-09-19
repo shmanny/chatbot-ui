@@ -15,7 +15,7 @@ export class CdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     const updatedProps = {
       ...props,
-      env: { ...props?.env, region: 'us-east-1', },
+      env: { ...props?.env, region: 'us-east-1', account: process.env.CDK_DEFAULT_ACCOUNT },
     };
     super(scope, id, updatedProps);
 
