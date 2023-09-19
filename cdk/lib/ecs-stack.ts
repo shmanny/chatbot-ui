@@ -11,13 +11,14 @@ import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as cert from 'aws-cdk-lib/aws-certificatemanager'
 import { Construct } from 'constructs';
 import { DockerImageAsset, } from 'aws-cdk-lib/aws-ecr-assets';
+import { DockerImageName, ECRDeployment } from 'cdk-ecr-deployment'
 import path = require('path');
 
 export class EcsStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     const updatedProps = {
       ...props,
-      env: { ...props?.env, region: 'us-east-1', account: process.env.CDK_DEFAULT_ACCOUNT },
+      env: { ...props?.env, region: 'us-east-1' },
     };
     super(scope, id, updatedProps);
 
@@ -28,6 +29,11 @@ export class EcsStack extends Stack {
       invalidation: {
         buildArgs: false,
       },
+    })
+
+    new ECRDeployment(this, 'DeployPgaAiDockerImage', {
+      src: new DockerImageName(dockerImage.imageUri),
+      dest: new DockerImageName(`117031054835.dkr.ecr.us-east-1.amazonaws.com/cdk-hnb659fds-container-assets-117031054835-us-east-1:latest`)
     })
 
     const vpc = new ec2.Vpc(this, 'PgaGptVpc', {
@@ -100,7 +106,7 @@ export class EcsStack extends Stack {
       'PgaGptImage',
       dockerImage.repository.repositoryArn,
     );
-    account: '099448516820'
+
 
     const albLoadBalancer =
       new ecs_patterns.ApplicationLoadBalancedFargateService(
