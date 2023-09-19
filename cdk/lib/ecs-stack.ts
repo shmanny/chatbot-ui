@@ -11,7 +11,6 @@ import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as cert from 'aws-cdk-lib/aws-certificatemanager'
 import { Construct } from 'constructs';
 import { DockerImageAsset, } from 'aws-cdk-lib/aws-ecr-assets';
-import { DockerImageName, ECRDeployment } from 'cdk-ecr-deployment'
 import path = require('path');
 
 export class EcsStack extends Stack {
