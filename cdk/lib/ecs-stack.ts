@@ -2,7 +2,7 @@ import { Aws, Stack, StackProps } from 'aws-cdk-lib';
 import * as cert from 'aws-cdk-lib/aws-certificatemanager';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
-import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
+import { DockerImageAsset, Platform } from 'aws-cdk-lib/aws-ecr-assets';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
 import { ApplicationProtocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
@@ -29,6 +29,7 @@ export class EcsStack extends Stack {
       invalidation: {
         buildArgs: false,
       },
+      platform: Platform.LINUX_AMD64
     });
 
     const vpc = new ec2.Vpc(this, 'PgaGptVpc', {
