@@ -11,8 +11,8 @@ export default function Unauthorized() {
   return (
     <div className="flex justify-center items-center flex-col space-y-4 w-full min-h-screen">
       <Image
-        width="200"
-        height="200"
+        width="150"
+        height="150"
         src="https://res.cloudinary.com/pgahq/image/upload/v1695141459/pga-brand-assets/pgaa-logo-rev.png"
         alt="logo"
         style={{ margin: 20 }}

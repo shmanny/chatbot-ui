@@ -65,11 +65,12 @@ const Sidebar = <T,>({
       >
         {showLogo && (
           <Image
-            width="200"
-            height="200"
+            className='self-center my-5'
+            width="150"
+            height="150"
             src="https://res.cloudinary.com/pgahq/image/upload/v1695141459/pga-brand-assets/pgaa-logo-rev.png"
             alt="logo"
-            style={{ margin: 20 }}
+            // style={{ margin: 30 }}
           />
         )}
         <div className="flex items-center">
