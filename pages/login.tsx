@@ -18,9 +18,7 @@ export default function Unauthorized() {
         style={{ margin: 20 }}
       />
       <p>Welcome to PGA GPT. Login with your Okta account below.</p>
-      <LoginButton handleClick={() => {
-        window.location.href = 'https://pgastaff-sandbox.okta.com/oauth2/default/v1/authorize?client_id=0oasyvv8r3Jgvbzjv357&scope=openid email profile&response_type=code&redirect_uri=https://dev.ai.pgahq.com/api/auth/callback/okta&state=LmiLllWV1eYSdYuuZjZ2j8UU_fSzvXD_B0ys9ByRv2E'
-      }}>
+      <LoginButton handleClick={() => signIn()}>
         <div>Login</div>
       </LoginButton>
     </div>
