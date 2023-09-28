@@ -69,6 +69,8 @@ export const ChatInput = ({
     prompt.name.toLowerCase().includes(promptInputValue.toLowerCase()),
   );
 
+  
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     const maxLength = selectedConversation?.model.maxLength;
@@ -112,6 +114,20 @@ export const ChatInput = ({
       stopConversationRef.current = false;
     }, 1000);
   };
+
+  useEffect(() => {
+    const stopConversationEventListener = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' || (event.key === 'Enter' && event.ctrlKey)) {
+        handleStopConversation();
+      }
+    };
+
+    window.addEventListener('keydown', stopConversationEventListener as any);
+
+    return () => {
+      window.removeEventListener('keydown', stopConversationEventListener as any);
+    };
+  }, []);
 
   const isMobile = () => {
     const userAgent =

@@ -12,7 +12,7 @@ import * as route53_targets from 'aws-cdk-lib/aws-route53-targets';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 
-import path = require('path');
+import * as path from 'path'
 
 export class EcsStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
