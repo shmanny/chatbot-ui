@@ -20,10 +20,10 @@ jobs:
             cd cdk && npm install
       - run:
           name: Bootstrap AWS CDK
-          command: npx cdk bootstrap
+          command: yes | npx cdk bootstrap
       - run:
           name: Deploy AWS CDK Stack
-          command: npx cdk deploy --require-approval never
+          command: yes | npx cdk deploy --require-approval never
 workflows:
   deploy:
     jobs:
