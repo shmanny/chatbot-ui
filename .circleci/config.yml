@@ -16,7 +16,7 @@ jobs:
       - checkout
       - run:
           name: 'install aws cdk'
-          command: npm install -g aws-cdk
+          command: npm install --prefix=$HOME/.local --global aws-cdk
       - run:
           name: 'install ECS packages'
           command: |
