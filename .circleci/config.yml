@@ -15,6 +15,9 @@ jobs:
           aws-region: AWS_REGION_NAME
       - checkout
       - run:
+          name: 'install aws cdk'
+          command: npm install -g aws-cdk
+      - run:
           name: 'install ECS packages'
           command: |
             cd cdk && npm install
