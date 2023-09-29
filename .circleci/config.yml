@@ -10,9 +10,10 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_ACCESS_SECRET
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION_NAME
+
       - checkout
       - run:
           name: 'install aws cdk'
