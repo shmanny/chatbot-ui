@@ -69,7 +69,6 @@ export const ChatInput = ({
     prompt.name.toLowerCase().includes(promptInputValue.toLowerCase()),
   );
 
-  
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;

@@ -34,7 +34,6 @@ import { Prompt } from '@/types/prompt';
 import { Chat } from '@/components/Chat/Chat';
 import { Chatbar } from '@/components/Chatbar/Chatbar';
 import { Navbar } from '@/components/Mobile/Navbar';
-import Promptbar from '@/components/Promptbar';
 
 import HomeContext from './home.context';
 import { HomeInitialState, initialState } from './home.state';
@@ -92,6 +91,20 @@ const Home = ({
     },
     { enabled: true, refetchOnMount: false },
   );
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' || (event.key === 'Enter' && event.ctrlKey)) {
+        stopConversationRef.current = true;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
 
   useEffect(() => {
     if (data) dispatch({ field: 'models', value: data });
@@ -316,32 +329,20 @@ const Home = ({
     }
 
     const selectedConversation = localStorage.getItem('selectedConversation');
-    if (selectedConversation) {
-      const parsedSelectedConversation: Conversation =
-        JSON.parse(selectedConversation);
-      const cleanedSelectedConversation = cleanSelectedConversation(
-        parsedSelectedConversation,
-      );
 
-      dispatch({
-        field: 'selectedConversation',
-        value: cleanedSelectedConversation,
-      });
-    } else {
-      const lastConversation = conversations[conversations.length - 1];
-      dispatch({
-        field: 'selectedConversation',
-        value: {
-          id: uuidv4(),
-          name: t('New Conversation'),
-          messages: [],
-          model: OpenAIModels[defaultModelId],
-          prompt: DEFAULT_SYSTEM_PROMPT,
-          temperature: lastConversation?.temperature ?? DEFAULT_TEMPERATURE,
-          folderId: null,
-        },
-      });
-    }
+    const lastConversation = conversations[conversations.length - 1];
+    dispatch({
+      field: 'selectedConversation',
+      value: {
+        id: uuidv4(),
+        name: t('New Conversation'),
+        messages: [],
+        model: OpenAIModels[defaultModelId],
+        prompt: DEFAULT_SYSTEM_PROMPT,
+        temperature: lastConversation?.temperature ?? DEFAULT_TEMPERATURE,
+        folderId: null,
+      },
+    });
   }, [
     defaultModelId,
     dispatch,
