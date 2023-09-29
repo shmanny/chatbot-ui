@@ -9,10 +9,14 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - run:
-          name: Install AWS CDK
-          command: npm install -g aws-cdk
       - aws-cli/setup
+          aws-secret-access-key: AWS_ACCESS_SECRET
+          aws-region: AWS_REGION_NAME
+      - checkout
+      - run:
+          name: 'install ECS packages'
+          command: |
+            cd cdk && npm install
       - run:
           name: Bootstrap AWS CDK
           command: cdk bootstrap
