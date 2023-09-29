@@ -9,7 +9,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - aws-cli/setup
+      - aws-cli/setup:
           aws-secret-access-key: AWS_ACCESS_SECRET
           aws-region: AWS_REGION_NAME
       - checkout
